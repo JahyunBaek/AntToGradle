@@ -1,64 +1,60 @@
 plugins {
     id 'java'
     id 'war'
-    id 'eclipse-wtp'
+    id 'eclipse-wtp'     
 }
 
 group = 'kspo'
 version = '1.0.0'
-webAppDirName = 'WebContent'
+archivesBaseName = 'zzzzzzz'
 
-// 프로필(web.xml 분기)
+sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
+
+
+// 프로필 구분 
+// -Pprofile=dev
 def profile = (findProperty('profile')
         ?: System.getenv('SPRING_PROFILES_ACTIVE')
         ?: System.getProperty('spring.profiles.active')
-        ?: 'local').toLowerCase()
+        ?: 'local').toLowerCase() 
+def web_file = profile == 'local' ? 'web.xml' : "web-${profile}.xml" 
+def log_file = profile == 'local' ? 'log4j2.xml' : "log4j2-${profile}.xml"
+def branch_dir = profile == 'local' ? 'dev' : profile
+def naxalicence_file = profile == 'local' ? 'nexacro_server_licence17.xml' : "nexacro_server_licence17-${profile}.xml" 
+
+println "Environment is ==> $profile"
 
 repositories {
-    maven {
+	
+maven {
         url = uri("https://maven.egovframe.go.kr/maven/")
         allowInsecureProtocol = true
         metadataSources {
             mavenPom()
             artifact()
         }
-        content {
-            includeGroup "egovframework.rte"
-            includeGroup "org.egovframe.rte"
-            includeGroupByRegex "egovframework(\\..+)?"
-        }
     }
-
-    mavenCentral {
-        content {
-            excludeGroup "egovframework.rte"
-            excludeGroup "org.egovframe.rte"
-        }
-    }
+	mavenCentral()
 }
-
-// spring-modules-validation 옛 좌표 → 새 좌표로 치환
-configurations.all {
-  resolutionStrategy {
-    dependencySubstitution {
-      substitute(module("org.springmodules:spring-modules-validation"))
-        .using(module("org.egovframe.rte:spring-modules-validation:0.9"))
-    }
-  }
-}
-
 
 sourceSets {
-  main {
-    java {
-      srcDirs = ['src']   // 실제 쓰는 쪽만 남겨도 OK
+    main {
+    	java{
+    		srcDirs = ['src']
+            include '**/*.java'
+    	}
+        resources {
+            srcDirs = ['src']
+            include '**/*.xml', '**/*.properties', '**/*.yml', '**/*.yaml', '**/*.sql'
+            //exclude '**/dev/**', '**/prod/**', '**/log4j2*.xml'
+            if ("${branch_dir}" == 'prod' ) exclude '**/dev/**'
+            else exclude '**/prod/**'
+            exclude '**/log4j2*.xml'
+        }
     }
-    resources {
-      srcDirs = ['src']
-      include '**/*.xml', '**/*.properties', '**/*.yml', '**/*.yaml','**/*.sql'  // ✨ 추가
-    }
-  }
 }
+
 ext {
     springVer        = '4.3.25.RELEASE'
     springSecVer     = '4.2.13.RELEASE'
@@ -69,108 +65,29 @@ ext {
     slf4jVer         = '1.7.30'
     log4j2Ver        = '2.17.2'     // 기존 2.14.2 → 보안관점 업그레이드 권장
     jacksonVer       = '2.6.1'      // 현재 버전 유지(향후 업그레이드 권장)
-    egovVer          = '3.10.0'     // eGovFrame 사용 버전
+    egovVer          = '3.10.0'     // eGovFrame 사용 버전  
 }
 
-dependencies {
-    // (참고) 서블릿 API는 배포에 포함되면 안 되므로 compileOnly 로 두세요.
-    implementation 'org.springframework:spring-jdbc:4.3.25.RELEASE'
-    implementation 'org.hsqldb:hsqldb:2.5.2'
 
-    compileOnly 'javax.servlet:javax.servlet-api:3.1.0'
-    compileOnly 'javax.servlet.jsp:javax.servlet.jsp-api:2.3.3'
+// dependencies 적용 
+apply from: "gradle/dependencies-common.gradle"
 
-	implementation 'javax.servlet:jstl:1.2'
-    // === Spring 4.3.25 ===
-    implementation "org.springframework:spring-core:${springVer}"
-    implementation "org.springframework:spring-beans:${springVer}"
-    implementation "org.springframework:spring-context:${springVer}"
-    implementation "org.springframework:spring-context-support:${springVer}"
-    implementation "org.springframework:spring-aop:${springVer}"
-    implementation "org.springframework:spring-tx:${springVer}"
-    implementation "org.springframework:spring-jdbc:${springVer}"
-    implementation "org.springframework:spring-orm:${springVer}"
-    implementation "org.springframework:spring-web:${springVer}"
-    implementation "org.springframework:spring-webmvc:${springVer}"
-
-    // === Spring Security 4.2.13 ===
-    implementation "org.springframework.security:spring-security-core:${springSecVer}"
-    implementation "org.springframework.security:spring-security-web:${springSecVer}"
-    implementation "org.springframework.security:spring-security-config:${springSecVer}"
-    implementation "org.springframework.security:spring-security-taglibs:${springSecVer}"
-
-    // === MyBatis 계열 (현재 lib에 ibatis 2.x도 보임: 실제로 쓰는 쪽만 선택) ===
-    implementation "org.mybatis:mybatis:${mybatisVer}"
-    implementation "org.mybatis:mybatis-spring:${mybatisSpringVer}"
-    // 만약 iBATIS 2.x를 실제 사용중이면 위 2줄 대신 ↓ 를 쓰세요 (둘 다 넣지 말 것)
-    // implementation "com.ibatis:ibatis-sqlmap:2.3.4.726"
-
-    // === 공통 라이브러리 (버전은 현재 lib 반영) ===
-    implementation 'com.mchange:c3p0:0.9.5.4'        // c3p0:c3p0 → com.mchange:c3p0
-implementation 'org.apache.commons:commons-email:1.5' 
-implementation 'org.apache.commons:commons-vfs2:2.0'  // commons-vfs → commons-vfs2
-
-    implementation 'commons-codec:commons-codec:1.14'
-    implementation 'commons-collections:commons-collections:3.2.2'
-    implementation 'org.apache.commons:commons-collections4:4.1'
-    implementation 'commons-dbcp:commons-dbcp:1.4'        // 또는 dbcp2 2.4.0
-    implementation 'org.apache.commons:commons-pool2:2.5.0'
-    implementation 'commons-fileupload:commons-fileupload:1.3.3'
-    implementation 'commons-io:commons-io:2.6'
-    
-    implementation 'commons-validator:commons-validator:1.6'
-   
-    implementation 'aopalliance:aopalliance:1.0'
-    implementation 'org.ow2.asm:asm:7.1'
-    implementation 'cglib:cglib:3.3.0'
-
-    // === Jackson 2.6.1(현행 유지) ===
-    implementation "com.fasterxml.jackson.core:jackson-core:${jacksonVer}"
-    implementation "com.fasterxml.jackson.core:jackson-databind:${jacksonVer}"
-    implementation "com.fasterxml.jackson.core:jackson-annotations:${jacksonVer}"
-
-    // === 로깅: log4j2로 통일 권장(현재 lib: log4j2 + slf4j 혼재) ===
-    implementation "org.slf4j:slf4j-api:${slf4jVer}"
-    implementation "org.slf4j:jcl-over-slf4j:${slf4jVer}" // commons-logging → slf4j
-    implementation "org.apache.logging.log4j:log4j-api:${log4j2Ver}"
-    implementation "org.apache.logging.log4j:log4j-core:${log4j2Ver}"
-    implementation "org.apache.logging.log4j:log4j-slf4j-impl:${log4j2Ver}"
-    configurations.all {
-        exclude group: 'log4j', module: 'log4j'            // 1.x 제거
-        exclude group: 'org.slf4j', module: 'slf4j-log4j12'
-        exclude group: 'commons-logging', module: 'commons-logging'
+// profile dependencies
+if (profile == 'local') {
+    dependencies {
+        implementation 'com.h2database:h2:2.2.224'
+        //implementation 'ch.qos.logback:logback-classic:1.2.13'
+        //implementation 'ch.qos.logback:logback-core:1.2.13'
     }
-
-    // === Quartz, POI, 기타 ===
-    implementation "org.quartz-scheduler:quartz:${quartzVer}"
-    implementation "org.quartz-scheduler:quartz-jobs:${quartzVer}"
-    implementation "org.apache.poi:poi:${poiVer}"
-    implementation "org.apache.poi:poi-ooxml:${poiVer}"
-    implementation 'net.sf.jxls:jxls-core:1.0.6'           // (구버전)
-    implementation 'com.thoughtworks.xstream:xstream:1.4.11.1' // 보안상 1.4.20+ 권장
-
-    // === DB 드라이버 (현재 lib: mysql-connector-java-5.1.31) ===
-   // runtimeOnly 'mysql:mysql-connector-java:5.1.31'
-
-    // === eGovFrame (가능하면 좌표로) ===
-    implementation "egovframework.rte:egovframework.rte.ptl.mvc:${egovVer}"
-    implementation "egovframework.rte:egovframework.rte.psl.dataaccess:${egovVer}"
-    implementation "egovframework.rte:egovframework.rte.fdl.cmmn:${egovVer}"
-    implementation "egovframework.rte:egovframework.rte.fdl.idgnr:${egovVer}"
-    implementation "egovframework.rte:egovframework.rte.fdl.property:${egovVer}"
-    implementation "egovframework.rte:egovframework.rte.fdl.logging:${egovVer}"
-    implementation "egovframework.rte:egovframework.rte.fdl.security:${egovVer}"
-    implementation "egovframework.rte:egovframework.rte.fdl.string:${egovVer}"
-    implementation "egovframework.rte:egovframework.rte.fdl.excel:${egovVer}"
-    // 필요 시 batch.core 등 추가
-implementation fileTree(dir: "${webAppDirName}/WEB-INF/lib-extra", include: ['*.jar'])
-    // === 중앙에 없는 애들(당장 빼기 어려운 것) 임시 유지 ===
-    // gpkisecureweb-1.0.4.9.jar, sndng-mail-1.0.jar, curveapi-1.04.jar 등
-    // → 우선 그대로 포함시켜 두고, 추후 Nexus thirdparty로 업로드해 좌표화
-
+} else {
+    apply from: "gradle/dependencies-${profile}.gradle"
 }
 
-// build.gradle 어딘가(plugins 밑이면 좋음)에 추가
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
 def askedWar = gradle.startParameter.taskNames.any { it == 'war' || it.endsWith(':war') } \
                || project.hasProperty('withWar')
 
@@ -180,19 +97,30 @@ tasks.named('war') {
     onlyIf { askedWar }      // 혹시 모를 실행도 한 번 더 차단
 }
 
-// web.xml 분기
-tasks.war {
-duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-    def xml = file("${webAppDirName}/WEB-INF/web-${profile}.xml")
-    webXml = xml.exists() ? xml : file("${webAppDirName}/WEB-INF/web.xml")
-    archiveBaseName = 'zzzzzzz'
-    archiveClassifier = profile
+
+war {
+	webAppDirName = 'WebContent'
+	destinationDirectory.set(file("./build/")) // war 파일 경로 지정 .. default => build/libs
+	duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
+	exclude '**/web*.xml'
+
+	// log4j2
+	from('src') {
+		include "${log_file}"
+		rename { "log4j2.xml" }
+		into "WEB-INF/classes/"
+	}
+	
+	// licence
+	from('src/licence') {
+		include "${naxalicence_file}"
+		rename { "nexacro_server_licence17.xml" }
+		into "WEB-INF/classes/"
+	}
+	
+	// web
+    webXml = file("WebContent/WEB-INF/${web_file}")	
 }
 
-tasks.withType(JavaCompile) {
-    options.encoding = 'UTF-8'
-}
-tasks.withType(Javadoc) {
-    options.encoding = 'UTF-8'
-    options.charSet = 'UTF-8'
-}
+

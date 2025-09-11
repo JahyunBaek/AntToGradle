@@ -1,0 +1,188 @@
+dependencies {
+    // ==== Core / Utils ====
+  implementation 'aopalliance:aopalliance:1.0'
+  implementation 'org.ow2.asm:asm:7.1'
+  implementation 'cglib:cglib:3.3.0'
+  implementation 'com.mchange:c3p0:0.9.5.4'
+  implementation 'com.lmax:disruptor:3.2.1'
+  implementation 'com.ibm.icu:icu4j:53.1'
+  implementation 'org.jasypt:jasypt:1.9.3'
+  implementation 'javax.inject:javax.inject:1'
+  implementation 'javax.batch:javax.batch-api:1.0'
+  implementation 'org.glassfish:javax.json:1.0.4'
+  implementation 'javax.activation:activation:1.1'
+
+  // ==== Logging (SLF4J + Log4j2) ====
+  implementation 'org.slf4j:slf4j-api:1.7.25'
+  implementation 'org.slf4j:jcl-over-slf4j:1.7.30'
+  implementation 'org.slf4j:log4j-over-slf4j:1.7.30'
+  implementation 'org.apache.logging.log4j:log4j-api:2.12.4'
+  implementation 'org.apache.logging.log4j:log4j-core:2.12.4'
+  implementation 'org.apache.logging.log4j:log4j-slf4j-impl:2.12.4'
+  implementation 'org.aspectj:aspectjweaver:1.9.5'
+  // implementation 'org.aspectj:aspectjweaver:1.8.14' // 구버전 필요 시만 사용
+
+  // ==== Apache Commons ====
+  implementation 'commons-beanutils:commons-beanutils:1.9.2'
+  implementation 'commons-logging:commons-logging:1.2'
+  implementation 'org.apache.commons:commons-collections4:4.1'
+  implementation 'commons-collections:commons-collections:3.2.2'
+  implementation 'org.apache.commons:commons-compress:1.19'
+  implementation 'org.apache.commons:commons-dbcp2:2.4.0'
+  implementation 'commons-digester:commons-digester:1.8.1'
+  implementation 'org.apache.commons:commons-email:1.5'
+  implementation 'commons-fileupload:commons-fileupload:1.3.3'
+  // implementation 'commons-fileupload:commons-fileupload:1.3.1'
+  //implementation 'org.apache.commons:commons-io:2.6'
+   implementation 'commons-io:commons-io:2.6'
+  implementation 'commons-codec:commons-codec:1.14'
+  //implementation 'commons-jexl:commons-jexl:2.0.1' // 
+  implementation 'org.apache.commons:commons-jexl:2.0.1'
+  implementation 'commons-lang:commons-lang:2.4'
+  implementation 'org.apache.commons:commons-lang3:3.8.1'
+  implementation 'commons-net:commons-net:3.6'
+  implementation 'org.apache.commons:commons-pool2:2.5.0'
+  implementation 'commons-validator:commons-validator:1.6'
+  implementation 'org.apache.commons:commons-vfs2:2.0'
+
+  // ==== DB / MyBatis ====
+  implementation 'mysql:mysql-connector-java:5.1.31'
+  implementation 'com.h2database:h2:1.4.180'
+  implementation 'org.hsqldb:hsqldb:2.5.0'
+  implementation 'com.ibatis:ibatis-sqlmap:2.3.4.726'
+  implementation 'org.mybatis:mybatis:3.4.6'
+  implementation 'org.mybatis:mybatis-spring:1.3.2'
+  implementation 'oro:oro:2.0.8'
+
+  // ==== Jackson ====
+  implementation 'com.fasterxml.jackson.core:jackson-annotations:2.6.1'
+  implementation 'com.fasterxml.jackson.core:jackson-core:2.6.1'
+  implementation 'com.fasterxml.jackson.core:jackson-databind:2.6.1'
+  implementation 'org.codehaus.jackson:jackson-core-asl:1.9.13'
+  implementation 'org.codehaus.jackson:jackson-mapper-asl:1.9.13'
+
+  // ==== Servlet/JSP ====
+  implementation 'javax.servlet:jstl:1.2'
+  implementation 'taglibs:standard:1.1.2'
+  compileOnly   'javax:javaee-api:7.0'   // WAS 제공 시 compileOnly 권장
+
+  // ==== POI / Excel ====
+  implementation 'org.apache.poi:poi:3.16'
+  implementation 'org.apache.poi:poi-ooxml:3.16'
+  implementation 'org.apache.poi:poi-ooxml-schemas:3.16'
+  implementation 'org.apache.xmlbeans:xmlbeans:2.6.0'
+  implementation 'com.github.virtuald:curvesapi:1.04'
+
+  // ==== Quartz ====
+  implementation 'org.quartz-scheduler:quartz:2.3.2'
+  implementation 'org.quartz-scheduler:quartz-jobs:2.3.2'
+
+  // ==== ANTLR ====
+  implementation 'antlr:antlr:2.7.7'
+  //implementation 'antlr:antlr:3.5'  //  중복 ..
+  implementation 'org.antlr:antlr:3.5' 
+  implementation 'org.antlr:antlr-runtime:3.5'
+  implementation 'org.antlr:stringtemplate:3.2.1'
+  implementation 'org.antlr:ST4:4.0.7'
+
+  // ==== Spring 4.3.25 / 관련 ====
+  implementation 'org.springframework:spring-core:4.3.25.RELEASE'
+  implementation 'org.springframework:spring-beans:4.3.25.RELEASE'
+  implementation 'org.springframework:spring-context:4.3.25.RELEASE'
+  implementation 'org.springframework:spring-context-support:4.3.25.RELEASE'
+  implementation 'org.springframework:spring-expression:4.3.25.RELEASE'
+  implementation 'org.springframework:spring-aop:4.3.25.RELEASE'
+  implementation 'org.springframework:spring-jdbc:4.3.25.RELEASE'
+  implementation 'org.springframework:spring-orm:4.3.25.RELEASE'
+  implementation 'org.springframework:spring-tx:4.3.25.RELEASE'
+  implementation 'org.springframework:spring-web:4.3.25.RELEASE'
+  implementation 'org.springframework:spring-webmvc:4.3.25.RELEASE'
+  implementation 'org.springframework:spring-messaging:4.3.25.RELEASE'
+ 
+  // Spring Integration / Retry / LDAP
+  implementation 'org.springframework.integration:spring-integration-core:4.1.9.RELEASE'
+  implementation 'org.springframework.retry:spring-retry:1.2.2.RELEASE'
+  implementation 'org.springframework.ldap:spring-ldap-core:2.3.2.RELEASE'
+
+  // Spring Security 4.2.13
+  implementation 'org.springframework.security:spring-security-core:4.2.13.RELEASE'
+  implementation 'org.springframework.security:spring-security-config:4.2.13.RELEASE'
+  implementation 'org.springframework.security:spring-security-web:4.2.13.RELEASE'
+  implementation 'org.springframework.security:spring-security-acl:4.2.13.RELEASE'
+  implementation 'org.springframework.security:spring-security-taglibs:4.2.13.RELEASE'
+
+  // Spring Batch 3.0.10
+  implementation     'org.springframework.batch:spring-batch-core:3.0.10.RELEASE'
+  implementation     'org.springframework.batch:spring-batch-infrastructure:3.0.10.RELEASE'
+  implementation     'org.springframework.batch:spring-batch-integration:3.0.10.RELEASE'
+  testImplementation 'org.springframework.batch:spring-batch-test:3.0.10.RELEASE'
+
+  // Spring Social
+  implementation 'org.springframework.social:spring-social-core:1.1.4.RELEASE'
+  implementation 'org.springframework.social:spring-social-config:1.1.4.RELEASE'
+  implementation 'org.springframework.social:spring-social-web:1.1.4.RELEASE'
+  implementation 'org.springframework.social:spring-social-facebook:2.0.3.RELEASE'
+
+  // ==== eGovFrame 3.10.0 ====
+  implementation("egovframework.rte:egovframework.rte.ptl.mvc:${egovVer}") {
+        exclude group: 'commons-logging', module: 'commons-logging'
+        exclude group: 'org.springmodules', module: 'spring-modules-validation'
+  }
+  // implementation 'egovframework.rte:egovframework.rte.bat.core:3.10.0'
+  implementation 'egovframework.rte:egovframework.rte.fdl.access:3.10.0'
+  implementation 'egovframework.rte:egovframework.rte.fdl.cmmn:3.10.0'
+  implementation 'egovframework.rte:egovframework.rte.fdl.crypto:3.10.0'
+  implementation 'egovframework.rte:egovframework.rte.fdl.excel:3.10.0'
+  implementation 'egovframework.rte:egovframework.rte.fdl.filehandling:3.10.0'
+  implementation 'egovframework.rte:egovframework.rte.fdl.idgnr:3.10.0'
+  implementation 'egovframework.rte:egovframework.rte.fdl.logging:3.10.0'
+  implementation 'egovframework.rte:egovframework.rte.fdl.property:3.10.0'
+  implementation 'egovframework.rte:egovframework.rte.fdl.security:3.10.0'
+  implementation 'egovframework.rte:egovframework.rte.fdl.string:3.10.0'
+  implementation 'egovframework.rte:egovframework.rte.psl.dataaccess:3.10.0'
+
+  // ==== Mail ====
+  implementation 'com.sun.mail:javax.mail:1.5.6'
+  // implementation 'com.sun.mail:javax.mail:1.5.0'
+
+  // ==== Office / UNO ====
+  implementation 'org.openoffice:juh:2.3.0'
+  implementation 'org.openoffice:jurt:2.3.0'
+  implementation 'org.openoffice:ridl:2.3.0'
+  implementation 'org.openoffice:unoil:2.3.0'
+  implementation 'com.artofsolving:jodconverter:2.2.1'
+
+  // ==== Social / OAuth ====
+  implementation 'com.github.scribejava:scribejava-core:5.6.0'
+  implementation 'com.github.scribejava:scribejava-apis:5.6.0'
+  implementation 'org.twitter4j:twitter4j-core:4.0.7'
+
+  // ==== XML utils ====
+  implementation 'xmlpull:xmlpull:1.1.3.1'
+  implementation 'xpp3:xpp3_min:1.1.4c'
+  implementation 'xml-apis:xml-apis:1.4.01'
+  implementation 'stax:stax-api:1.0.1'
+  implementation 'com.thoughtworks.xstream:xstream:1.4.11.1'
+
+  // ==== Test ====
+  testImplementation 'org.hamcrest:hamcrest-core:1.3'
+  testImplementation 'org.hamcrest:hamcrest-library:1.3'
+
+  // ==== (Fallback: 사내/커스텀, 스크립트 기본 groupId로 업로드된 것으로 가정) ====
+  implementation("org.springmodules:spring-modules-validation:0.8") {
+        exclude group: "org.springframework", module: "spring" // ← spring 2.0.3 제거
+    }
+    implementation "commons-validator:commons-validator:1.6"
+}
+configurations.all {
+    resolutionStrategy {
+        force "org.springframework:spring-core:4.3.25.RELEASE",
+              "org.springframework:spring-beans:4.3.25.RELEASE",
+              "org.springframework:spring-context:4.3.25.RELEASE",
+              "org.springframework:spring-webmvc:4.3.25.RELEASE",
+              "org.springframework:spring-web:4.3.25.RELEASE",
+              "org.springframework:spring-tx:4.3.25.RELEASE",
+              "org.springframework:spring-jdbc:4.3.25.RELEASE",
+              "org.springframework:spring-orm:4.3.25.RELEASE"
+    }
+}
