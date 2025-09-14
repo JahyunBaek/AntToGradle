@@ -28,7 +28,8 @@
    - `프로젝트 우클릭 → Gradle → Refresh Gradle`  
 
 5. **Gradle Wrapper 설정**  
-   - `gradle/wrapper/gradle-x.x-bin.zip` 버전에 맞는 Gradle 파일을 이동/적용한다.  
+   - `gradle/wrapper/gradle-x.x-bin.zip` 버전에 맞는 Gradle 파일을 이동/적용한다.
+   - 이후 로컬에 설치된 gradle을 사용하여 프로젝트내에서 `gradle wrapper` 명령어 실행  
 
 6. **Gradle 재동기화**  
    - `프로젝트 우클릭 → Gradle → Refresh Gradle`  
